@@ -8,18 +8,30 @@
 
 import UIKit
 import RealmSwift
-import RealmSwift
 import UserNotifications
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var serchbartext: UISearchBar!
+    @IBAction func searchtextEditEnd(_ sender: UITextField) {
+        if(sender.text == ""){
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        }else{
+                taskArray = try! Realm().objects(Task.self).filter("category like %@",sender.text!).sorted(byKeyPath: "date", ascending: false)
+        }
+        viewWillAppear(true)
+        
+    }
+    
+    
+    
+    
+
     
     //Realmインスタンスを取得する
     //    let realm = try! Realm()
     let realm = try! Realm()
-    
     //DB内のタスクが格納されるリスト
     //日付近い順ー順でソート：
     //以降内容をアップデートするとリスト内は自動的に更新される。
@@ -33,6 +45,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableView.delegate = self
         tableView.dataSource = self
+        //Realm確認
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -101,7 +116,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //            center.removePendingNotificationRequests(withIdentifiers: [String(task.id)])
         // データベースから削除
         try! realm.write {
-            self.realm.delete(task)
+           self.realm.delete(task)
+//             self.realm.delete(self.taskArray[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
         // 未通知のローカル通知一覧ログ出力
@@ -125,9 +141,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let task = Task()
             task.date = Date()
             
-            let allTasks = realm.objects(Task.self)
-            if allTasks.count != 0 {
-                task.id = allTasks.max(ofProperty: "id")! + 1
+//            let allTasks = realm.objects(Task.self)
+//           if allTasks.count != 0 {
+//                task.id = allTasks.max(ofProperty: "id")! + 1
+                
+            let taskArray = realm.objects(Task.self)
+            if taskArray.count != 0 {
+                task.id = taskArray.max(ofProperty: "id")! + 1
+                
            }
             
             inputViewController.task = task

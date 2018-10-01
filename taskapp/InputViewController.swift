@@ -14,12 +14,11 @@ class InputViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var datepicker: UIDatePicker!
+    //textfieldをoutlet接続
+    @IBOutlet weak var categoryTextField: UITextField!
 
     var task: Task!
     let realm = try! Realm()
-    
-
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +30,8 @@ class InputViewController: UIViewController {
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         datepicker.date = task.date
+        //テキストフィルドとファイルを括り付ける
+        categoryTextField.text =  task.category
         // Do any additional setup after loading the view.
     }
     
@@ -48,10 +49,11 @@ class InputViewController: UIViewController {
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datepicker.date
             self.realm.add(self.task, update: true)
+            self.task.category = self.categoryTextField.text!
+            //カテゴリ用の削除
         }
         
         setNotification(task: task)
-        
         super.viewWillDisappear(animated)
     }
     
@@ -62,7 +64,7 @@ class InputViewController: UIViewController {
         }else{
             content.title = task.title
         }
-        if task.contents == ""{
+        if task.contents == "" {
             content.body = "(内容なし)"
         }else{
             content.body = task.contents
@@ -90,6 +92,10 @@ class InputViewController: UIViewController {
             }
         }
     }
+
+        
+
+    
     }
     
     
