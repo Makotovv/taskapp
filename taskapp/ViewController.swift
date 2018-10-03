@@ -10,33 +10,35 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource ,UISearchBarDelegate{
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var serchbartext: UISearchBar!
+    
+    
+    @IBOutlet weak var searchtextEditEnd: UITextField!
+
     @IBAction func searchtextEditEnd(_ sender: UITextField) {
-        if(sender.text == ""){
-            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
-        }else{
-                taskArray = try! Realm().objects(Task.self).filter("category like %@",sender.text!).sorted(byKeyPath: "date", ascending: false)
-        }
-        viewWillAppear(true)
+        
+        
         
     }
-    
-    
-    
-    
-
-    
     //Realmインスタンスを取得する
     //    let realm = try! Realm()
     let realm = try! Realm()
     //DB内のタスクが格納されるリスト
     //日付近い順ー順でソート：
     //以降内容をアップデートするとリスト内は自動的に更新される。
-    
+//○抽出
+//    var searchtextEditEnd: Results<ToDo>?
+ //○抽出
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)  
+    
+ //○確認する対象はここに書く
+ //var
+    
+    
+    
     
     
     override func viewDidLoad() {
@@ -47,9 +49,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
         //Realm確認
         print(Realm.Configuration.defaultConfiguration.fileURL!)
+        //serchbarのDelegateをselfに設定
+        serchbartext.delegate = self
+        //薄文字の説明
+        serchbartext.placeholder = "検索文字入力"
+        //ViewにsearchBaroをSubViewとして追加
+        //self.view.addSubview(searchBar)
         
+        
+
     }
-    
+        
+        
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -94,26 +105,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            //            try! realm.write{
-            //                self.realm.delete(self.taskArray[indexPath.row])
-            //                tableView.deleteRows(at:[indexPath],with: .fade)
-            //        }
-            
+  
             // 削除されたタスクを取得
             let task = self.taskArray[indexPath.row]
-            
-            //            // データベースから削除する
-            //            try! realm.write {
-            //                self.realm.delete(task)
-            //                tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
-        
+
         // ローカル通知をキャンセルする
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [String(task.id)])
-        
-        //            let center = UNUserNotificationCenter.current()
-        //            center.removePendingNotificationRequests(withIdentifiers: [String(task.id)])
+
         // データベースから削除
         try! realm.write {
            self.realm.delete(task)
@@ -140,10 +139,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else {
             let task = Task()
             task.date = Date()
-            
-//            let allTasks = realm.objects(Task.self)
-//           if allTasks.count != 0 {
-//                task.id = allTasks.max(ofProperty: "id")! + 1
                 
             let taskArray = realm.objects(Task.self)
             if taskArray.count != 0 {
@@ -153,6 +148,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             inputViewController.task = task
         }
+    }
+//searchbarの設定
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // キーボードを閉じる。
+        self.view.endEditing(true)
+        let keyword = serchbartext.text!
+        if keyword.isEmpty {
+            taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        } else {
+            taskArray = realm.objects(Task.self).filter("category = %@",keyword ).sorted(byKeyPath: "date", ascending: false)
+        }
+        tableView.reloadData()
     }
     
     // 入力画面から戻ってきた時に TableView を更新させる
