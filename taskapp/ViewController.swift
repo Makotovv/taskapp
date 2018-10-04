@@ -16,9 +16,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var serchbartext: UISearchBar!
     
     
-    @IBOutlet weak var searchtextEditEnd: UITextField!
+   @IBOutlet weak var searchtextEditEnd: UITextField!
 
-    @IBAction func searchtextEditEnd(_ sender: UITextField) {
+   @IBAction func searchtextEditEnd(_ sender: UITextField) {
+        
+        
+        
         
         
         
@@ -149,7 +152,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             inputViewController.task = task
         }
     }
-//searchbarの設定
+//searchbar.delegateの設定
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる。
         self.view.endEditing(true)
