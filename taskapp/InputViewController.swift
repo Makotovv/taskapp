@@ -65,9 +65,6 @@ class InputViewController: UIViewController {
         // 枠を角丸にする場合(DatePicker)
         datepicker.layer.cornerRadius = 10.0
         datepicker.layer.masksToBounds = true
-        
-        
-        
     }
     
     @objc func dismissKeyboard(){
@@ -85,7 +82,6 @@ class InputViewController: UIViewController {
             self.task.date = self.datepicker.date
             self.realm.add(self.task, update: true)
             self.task.category = self.categoryTextField.text!
-            //カテゴリ用の削除
         }
         
         setNotification(task: task)
@@ -127,15 +123,7 @@ class InputViewController: UIViewController {
             }
         }
     }
-
-        
-
-    
-    }
-    
-    
-    
-    
+}
 
     /*
     // MARK: - Navigation
