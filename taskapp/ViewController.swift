@@ -56,8 +56,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         serchbartext.placeholder = "検索文字入力"
         //ViewにsearchBaroをSubViewとして追加
         //self.view.addSubview(searchBar)
-        
-        
+
 
     }
         
@@ -154,7 +153,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる。
-//        self.view.endEditing(true)
+        self.view.endEditing(true)
         let keyword = serchbartext.text!
         if keyword.isEmpty {
             taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending: false)
@@ -164,6 +163,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         tableView.reloadData()
     }
+    
+
+
+    
  
 
     // 入力画面から戻ってきた時に TableView を更新させる

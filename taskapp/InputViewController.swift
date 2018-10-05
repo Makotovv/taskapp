@@ -33,6 +33,41 @@ class InputViewController: UIViewController {
         //テキストフィルドとファイルを括り付ける
         categoryTextField.text =  task.category
         // Do any additional setup after loading the view.
+
+        //枠のカラー(lowtextfield)
+        categoryTextField.layer.borderColor = UIColor.black.cgColor
+        // 枠の幅(lowtextfield)
+        categoryTextField.layer.borderWidth = 1.0
+        // 枠を角丸にする場合(lowtextfield)
+        categoryTextField.layer.cornerRadius = 10.0
+        categoryTextField.layer.masksToBounds = true
+        
+        //枠のカラー(textfield)
+        titleTextField.layer.borderColor = UIColor.black.cgColor
+        // 枠の幅(textfield)
+        titleTextField.layer.borderWidth = 1.0
+        // 枠を角丸にする場合(textView)
+        titleTextField.layer.cornerRadius = 10.0
+        titleTextField.layer.masksToBounds = true
+        
+        // 枠のカラー(textView)
+        contentsTextView.layer.borderColor = UIColor.black.cgColor
+        // 枠の幅(textView)
+        contentsTextView.layer.borderWidth = 1.0
+        // 枠を角丸にする場合(textView)
+        contentsTextView.layer.cornerRadius = 10.0
+        contentsTextView.layer.masksToBounds = true
+        
+        //枠のカラー(DatePicker)
+        datepicker.layer.borderColor = UIColor.black.cgColor
+        // 枠の幅(DatePicker)
+        datepicker.layer.borderWidth = 1.0
+        // 枠を角丸にする場合(DatePicker)
+        datepicker.layer.cornerRadius = 10.0
+        datepicker.layer.masksToBounds = true
+        
+        
+        
     }
     
     @objc func dismissKeyboard(){
