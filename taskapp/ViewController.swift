@@ -32,9 +32,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //DB内のタスクが格納されるリスト
     //日付近い順ー順でソート：
     //以降内容をアップデートするとリスト内は自動的に更新される。
-//○抽出
-//    var searchtextEditEnd: Results<ToDo>?
- //○抽出
+
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)  
     
  //○確認する対象はここに書く
@@ -153,18 +151,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
 //searchbar.delegateの設定
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる。
-        self.view.endEditing(true)
+//        self.view.endEditing(true)
         let keyword = serchbartext.text!
         if keyword.isEmpty {
             taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending: false)
         } else {
             taskArray = realm.objects(Task.self).filter("category = %@",keyword ).sorted(byKeyPath: "date", ascending: false)
         }
+
         tableView.reloadData()
     }
-    
+ 
+
     // 入力画面から戻ってきた時に TableView を更新させる
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
