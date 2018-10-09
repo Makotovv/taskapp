@@ -21,7 +21,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //DB内のタスクが格納されるリスト
     //日付近い順ー順でソート：
     //以降内容をアップデートするとリスト内は自動的に更新される。
-
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
  
     override func viewDidLoad() {
@@ -46,7 +45,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     //MARK: UITableViewDelegateプロトコルのメソッド
     //データの数（=セルの数）を返すメソッド
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return taskArray.count
         //        return 0
         
@@ -115,9 +113,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 //searchbar.delegateの設定
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // キーボードを閉じる。
-        self.view.endEditing(true)
         let keyword = serchbartext.text!
         if keyword.isEmpty {
             taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending: false)
